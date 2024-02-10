@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Pembayaran</title>
+  </head>
+  <div class="page">
+    <body [@fadeIn]="fadeInState">
+      <header>
+        <nav class="flex items-center justify-between">
+          <div class="items-center ml-12 justify-center"></div>
+          <p class="text-gray-600 text-lg font-bold mt-12">Pembayaran</p>
+          <button routerLink="/home" class="items-center justify-end mr-6">
+            <img src="./assets/home.svg" alt="Close" class="mt-12 w-6 h-6" />
+          </button>
+        </nav>
+      </header>
+
+      <main class="mt-8">
+        <p class="text-gray-600 text-lg text-center mb-2 font-bold">
+          Pilih Jenis Pembayaran
+        </p>
+        <hr class="border-b border-gray-300 mx-8" />
+        <div class="flex justify-between mt-4 mr-8">
+          <div class="ml-auto">
+            <button (click)="togglePopup()">
+              <i
+                class="fas fa-toggle-off"
+                style="font-size: 28px; color: #f15a23"
+                *ngIf="!isSwitchActive"
+              ></i>
+              <i
+                class="fas fa-toggle-on"
+                style="font-size: 28px; color: #f15a23"
+                *ngIf="isSwitchActive"
+              ></i>
+            </button>
+          </div>
+
+          <!-- <div
+            *ngIf="isPopupVisible"
+            class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50"
+          >
+            <div class="bg-white p-4 rounded-md text-center mr-10 ml-10">
+              <p class="text-gray-600 mt-2 text-lg font-bold">
+                Sistem Pengingat Otomatis
+              </p>
+              <p class="p-10 text-sm">
+                Ayo, aktifkan sistem pengingat otomatis sekarang untuk
+                menghindari keterlambatan pembayaran tagihanmu.
+              </p>
+              <div
+                class="border-t border-gray-300 flex justify-between items-center text-center p-1"
+              >
+                <button
+                  (click)="closeNotification(false)"
+                  class="text-stone-400 text-center hover:text-gray-500 ml-5 mt-2"
+                >
+                  Batal Aktifkan
+                </button>
+                <div class="border-r border-gray-300 h-6"></div>
+                <button
+                  (click)="closeNotification(true)"
+                  class="text-green-800 text-center hover:text-green-600 mr-5 mt-2"
+                >
+                  Aktifkan
+                </button>
+              </div>
+              <div class="fixed top-0 flex items-center mt-10"></div>
+            </div>
+          </div> -->
+
+          <!-- ... (sebelumnya kode HTML Anda) ... -->
+
+          <!-- ... (sebelumnya kode HTML Anda) ... -->
+
+          <!-- Tambahkan pada template HTML Anda -->
+          <!-- ... (sebelumnya kode HTML Anda) ... -->
+
+          <div
+            *ngIf="isPopupVisible"
+            class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center h-full"
+          >
+            <div
+              class="bg-white p-2 rounded-md text-center"
+              style="
+                max-width: 300px;
+                max-height: 400px;
+                overflow-y: auto;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+              "
+            >
+              <p class="text-gray-600 mt-2 text-lg font-bold">
+                Sistem Pengingat Otomatis
+              </p>
+              <p class="p-10 text-sm text-center">
+                Ayo, aktifkan sistem pengingat otomatis sekarang untuk
+                menghindari keterlambatan pembayaran tagihanmu.
+              </p>
+              <div
+                class="border-t border-gray-300 flex justify-between items-center text-center p-1"
+              >
+                <button
+                  (click)="closeNotification(false)"
+                  class="text-stone-400 text-centerh hover:text-[#F15A23] ml-5 mt-2"
+                >
+                  Batal Aktifkan
+                </button>
+                <div class="border-r border-gray-300 h-6"></div>
+                <button
+                  (click)="closeNotification(true)"
+                  class="text-[#40787F] text-center hover:text-[#F15A23] mr-5 mt-2 font-semibold"
+                >
+                  Aktifkan
+                </button>
+              </div>
+              <div class="fixed top-0 flex items-center mt-10"></div>
+            </div>
+          </div>
+
+          <!-- ... (setelahnya kode HTML Anda) ... -->
+
+          <!-- ... (setelahnya kode HTML Anda) ... -->
+
+          <!-- ... (setelahnya kode HTML Anda) ... -->
+        </div>
+      </main>
+
+      <div class="grid grid-cols-4 gap-4 ml-8 mt-4 mr-8 mx-auto">
+        <button class="flex flex-col items-center">
+          <img
+            class="w-20 mb-2"
+            src="./assets/kartukredit.svg"
+            alt="kartukredit"
+          />
+          <span class="text-sm">Kartu Kredit BNI</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img
+            class="w-20 mb-2"
+            src="./assets/kartukreditlain.svg"
+            alt="kartukreditlain"
+          />
+          <span class="text-sm">Kartu Kredit Bank Lain</span>
+        </button>
+
+        <button class="flex flex-col items-center">
+          <img
+            class="w-20 mb-2"
+            src="./assets/pascabayartelepon.svg"
+            alt="pascabayartelepon"
+          />
+          <span class="text-sm">Pasca Bayar Telepon</span>
+        </button>
+        <button routerLink="/pln" class="flex flex-col items-center">
+          <img
+            class="w-20 mb-2"
+            src="./assets/plnpascabayar.svg"
+            alt="plnpascabayar"
+          />
+          <span class="text-sm">PLN Pascabayar</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img
+            class="w-20 mb-2"
+            src="./assets/penerimaannegara.svg"
+            alt="penerimaannegara"
+          />
+          <span class="text-sm">Penerimaan Negara</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img
+            class="w-20 mb-2"
+            src="./assets/multifinance.svg"
+            alt="multifinance"
+          />
+          <span class="text-sm">Multifinance</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img
+            class="w-20 mb-2"
+            src="./assets/tvberlangganan.svg"
+            alt="tvberlangganan"
+          />
+          <span class="text-sm">TV Berlangganan</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img class="w-20 mb-2" src="./assets/zis.svg" alt="zis" />
+          <span class="text-sm">ZIS & Qurban</span>
+        </button>
+      </div>
+    </body>
+  </div>
+</html>

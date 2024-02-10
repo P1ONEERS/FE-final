@@ -1,0 +1,112 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Sharing Bill</title>
+  </head>
+  <div class="page">
+    <body>
+      <header>
+        <nav class="flex items-center justify-center">
+          <p class="text-gray-600 text-lg font-bold mt-12">Sharing Bill</p>
+        </nav>
+      </header>
+
+      <div class="justify-center ml-6 mt-6">
+        <ng-container *ngFor="let user of usertampil; let i = index">
+          <div *ngIf="i === 2">
+            <div
+              class="mt-2 text-black font-semibold text-lg font-['Open Sans']"
+            >
+              Detail Bill Anda
+            </div>
+            <div
+              class="mt-2 text-black font-regular text-xs font-['Open Sans']"
+            >
+              Tanggal Bill : {{ currentDate }} {{ currentTime }} WIB
+            </div>
+            <div
+              class="mt-2 font-semibold text-xs font-['Open Sans'] text-[#F15A23]"
+            >
+              IDR {{ calculateTotalPerUser(user) }}
+            </div>
+          </div>
+        </ng-container>
+
+        <div style="max-height: 550px; overflow-y: auto">
+          <div *ngFor="let user of userNames">
+            <div class="flex items-center mt-6">
+              <img
+                [src]="temanService.getRandomImage()"
+                alt="Teman"
+                class="w-12 h-12"
+              />
+              <div class="flex flex-col ml-4 items-start">
+                <p class="text-xs font-medium font-['Open Sans'] text-gray-600">
+                  {{ user }}
+                </p>
+                <p
+                  class="mt-1 text-md font-bold font-['Open Sans'] text-gray-600"
+                >
+                  IDR {{ calculateTotalPerUser(user) }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <hr class="mt-6 mr-6 border-[#D8D8D8]" />
+
+          <div class="w-full">
+            <table class="w-full">
+              <tr>
+                <td class="w-full">
+                  <div
+                    *ngFor="let item of dataTemandanItem"
+                    class="flex justify-between w-full items-center"
+                  >
+                    <p
+                      class="text-black text-sm mt-2 font-semibold font-['Open Sans']"
+                    >
+                      {{ item.name }}
+                    </p>
+                    <div class="flex mt-1 mr-12">
+                      <div
+                        class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                      >
+                        x {{ item.quantity }}
+                        <!-- X {{ qtyhasilscan[data.indexOf(item)] }} -->
+                      </div>
+                      <div
+                        class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                      >
+                        {{ item.price }}
+                      </div>
+
+                      <!-- Update the [disabled] attribute in the template -->
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                  <!-- </div> -->
+                </td>
+              </tr>
+            </table>
+          </div>
+          <hr class="mt-2 mr-6 border-[#D8D8D8] border-dashed" />
+        </div>
+      </div>
+      <!-- </div> -->
+      <div class="flex items-center justify-center">
+        <button
+          type="button"
+          routerLink="/splitbill"
+          class="rounded-lg bg-[#40787F] p-2 ml-4 mr-4 mt-8 text-white text-center font-semibold font-['Open Sans'] w-full text-sm"
+        >
+          Bayar
+        </button>
+      </div>
+    </body>
+      
+  </div>
+</html>

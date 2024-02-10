@@ -1,0 +1,33 @@
+/* not-found.component.css */
+
+.not-found-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0; /* Choose a suitable background color */
+  }
+  
+  .not-found-content {
+    text-align: center;
+    color: #333;
+  }
+  
+  .futuristic-bank-image {
+    width: 100%;
+    max-width: 400px; /* Adjust the size as needed */
+    margin-top: 20px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #007bff; /* Choose a suitable link color */
+    font-weight: bold;
+    margin-top: 20px;
+    display: inline-block;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  

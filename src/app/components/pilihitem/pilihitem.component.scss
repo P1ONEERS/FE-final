@@ -1,0 +1,12 @@
+.selected-friend:hover {
+  background-color: #E2FCFF; /* Replace with the desired green color */
+}
+
+.focus\:ring {
+  outline: 2px solid transparent; /* Ensure there is no default focus outline */
+}
+
+.clicked {
+  box-shadow: 0 0 0 2px #40787F;
+  border-radius: 50%; /* Optional: Add a border-radius for a circular effect */
+}
