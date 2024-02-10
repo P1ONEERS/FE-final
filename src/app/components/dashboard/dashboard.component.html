@@ -1,0 +1,98 @@
+<!-- Top navigation -->
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0">
+    <img class="brand-logo" src="assets/BNI.svg" alt="BNILogo">
+  </a>
+</nav>
+
+<!-- Sidebar navigation -->
+<div class="container-fluid">
+  <div class="row">
+
+    <nav class="col-md-2 d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active">
+              <i class="fas fa-user"></i>User Profile
+            </a>
+          </li>
+          <!-- Calling SignOut() Api from AuthService -->
+          <li class="nav-item">
+            <a class="nav-link" (click)="authService.SignOut()">
+              <i class="fas fa-sign-out-alt"></i>Log out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="inner-adjust">
+
+        <div class="pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">User Profile</h1>
+        </div>
+        <!-- Show user data when logged in -->
+        <div class="row" *ngIf="authService.userData as user">
+          <div class="col-md-12">
+            <div class="media">
+              <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}"
+                alt="{{user.displayName}}">
+              <div class="media-body">
+                <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
+                <p>User ID: <strong>{{user.uid}}</strong></p>
+                <p>Email: <strong>{{user.email}}</strong></p>
+                <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <button (click)="startScanning()">Start Scanning</button> -->
+        <!-- dashboard.component.html -->
+        <!-- dashboard.component.html -->
+
+        <div>
+          <form (submit)="startScanning($event)">
+            <input type="file" id="my-file-input" name="file" />
+            <button type="submit">Start Scanning</button>
+          </form>
+        </div>
+        
+        <!-- dashboard.component.html -->
+<div *ngIf="scannedResult">
+  <div *ngIf="scannedResult.document && scannedResult.document.inference.pages">
+    <div *ngFor="let page of scannedResult.document.inference.pages">
+      <div *ngIf="page && page.prediction && page.prediction.line_items">
+        <h2>Line Items</h2>
+        <ul>
+          <li *ngFor="let item of page.prediction.line_items">
+            <p>Description: {{ item.description }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Total Amount: {{ item.total_amount }}</p>
+            <!-- Display the generated QR code -->
+            <div>
+              <qrcode [qrdata]="generateQRCode(item)" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+            </div>
+            <!-- Display the redirect link -->
+            <p>Redirect Link: <a href="{{ generateQRCode(item) }}" target="_blank">{{ generateQRCode(item) }}</a></p>
+            <button (click)="sendViaWhatsApp(item)">Send Link via WhatsApp</button>
+
+          </li>
+        </ul>
+        <h2>Total Payment</h2>
+        <p *ngIf="page.prediction.total_amount">
+          Total Amount: {{ page.prediction.total_amount.value }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <p>Scanned Result: {{ scannedResult | json }}</p>
+</div>
+</div>
+
+    </main>
+
+  </div>
+</div>

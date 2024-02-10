@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Sharing Bill</title>
+  </head>
+  <div class="page">
+    <body>
+      <header>
+        <nav class="flex items-center justify-between">
+          <button routerLink="/pilihitem" class="items-center mt-12 ml-6">
+            <img src="./assets/back.svg" alt="Back" class="w-6 h-6" />
+          </button>
+          <p class="text-gray-600 text-lg font-bold mt-12">Sharing Bill</p>
+          <button routerLink="/home" class="items-center mt-12 mr-6">
+            <img src="./assets/home.svg" alt="Home" class="w-6 h-6" />
+          </button>
+        </nav>
+      </header>
+
+      <div class="justify-center ml-6 mt-6">
+        <div class="font-semibold text-xs font-['Open Sans'] text-[#F15A23]">
+          Edit Jumlah Item
+        </div>
+        <div class="mt-2 text-black font-semibold text-lg font-['Open Sans']">
+          {{ idItem }}
+        </div>
+        <div class="mt-2 text-black font-regular text-xs font-['Open Sans']">
+          Kamu bisa mengatur kuantitas item yang terpilih
+        </div>
+
+        <!-- container increment decrement qty item -->
+        <div class="flex items-center mt-6">
+          <div class="flex items-center">
+            <img
+              src="../../../assets/karakter/gambar_4.svg"
+              alt="Teman"
+              class="w-12 h-12"
+            />
+            <div class="flex flex-col ml-4 items-start">
+              <p
+                class="mt-1 text-md font-bold font-['Open Sans'] text-gray-600"
+              >
+                Melati
+              </p>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center ml-auto">
+            <button (click)="decrement()" [disabled]="showLastCount">
+              <i class="mr-3 fas fa-minus-circle text-[#F15A23]"></i>
+            </button>
+            <p class="text-gray-600 w-4 items-center text-center">
+              {{ showLastCount ? lastCount : count }}
+            </p>
+            <button (click)="increment()" [disabled]="showLastCount">
+              <i class="ml-3 mr-10 fas fa-plus-circle text-[#F15A23]"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /container increment decrement qty item -->
+      </div>
+      <footer class="flex justify-center">
+        <button
+          class="fixed bottom-10 z-auto rounded-lg bg-[#40787F] p-2 text-white text-sm text-center font-semibold font-['Open Sans'] w-[365px]"
+          type="button"
+          routerLink="/pilihitem"
+          (click)="save()"
+        >
+          Simpan
+        </button>
+      </footer>
+    </body>
+  </div>
+</html>

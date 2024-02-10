@@ -1,0 +1,33 @@
+@media screen and (max-width: 390px ) {
+  body {
+    font-size: small;
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 0px ;
+    text-align: center;
+    background-color: white;
+  }
+}
+
+@media only screen and (min-width: 500px){
+  .page{
+    max-width: 400px;
+    justify-content: center;
+    align-items: center;
+    margin: auto; 
+    border: 1px solid black; 
+  }
+  nav {
+    position: relative;
+  }
+
+  table {
+    margin-top: 6px;
+  }
+}

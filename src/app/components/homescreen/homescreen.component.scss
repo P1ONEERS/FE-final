@@ -1,0 +1,44 @@
+@media screen and (max-width: 390px ) {
+  body {
+    font-size: small;
+    max-width: auto;
+  }
+
+  p {
+    font-size: small;
+  }
+
+  .bni {
+    width: 80px;
+  }
+
+  .notif{
+    width: 30px;
+  }
+
+  .promo {
+    margin-top: 4px;
+    margin-bottom: 2px;
+  }
+
+  span {
+    font-size: smaller;
+  }
+
+  img {
+    width: auto;
+    height: auto;
+  }
+
+  .footer-btn-qris img{
+    width: 85px;
+    height: 85px;
+  }
+
+  .footer-btn img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+ 

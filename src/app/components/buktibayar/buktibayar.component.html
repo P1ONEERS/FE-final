@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Bukti Transaksi</title>
+  </head>
+  <div class="page">
+    <body [@fadeIn]="fadeInState">
+      <header>
+        <nav class="flex items-center justify-center">
+          <div class="items-center justify-center"></div>
+          <p class="text-gray-600 text-lg font-bold mt-12">PLN Pascabayar</p>
+        </nav>
+      </header>
+
+      <main class="mt-8">
+        <div class="m-8">
+          <div class="relative border shadow-sm p-6 rounded">
+            <div class="flex items-center">
+              <img class="w-20" src="./assets/bni.svg" alt="BNI" />
+            </div>
+
+            <div class="top-8 -right-6 flex flex-col items-end absolute">
+              <ng-container *ngFor="let logoPath of logoPaths; let i = index">
+                <img
+                  [class.rotate-90]="true"
+                  [class.opacity-10]="true"
+                  [class.mt-16]="i > 0"
+                  class="w-20"
+                  [src]="logoPath"
+                  [alt]="'Logo ' + (i + 1)"
+                />
+              </ng-container>
+              <!-- Add more logos as needed -->
+            </div>
+            <div class="flex items-center justify-center">
+              <i class="fas fa-circle-check fa-4x text-[#40787F]"></i>
+            </div>
+            <p class="text-gray-600 text-lg text-center mb-1 mt-4 font-bold">
+              Transaksi Berhasil
+            </p>
+            <div class="flex flex-col items-start">
+              <div class="flex justify-between w-full mt-8">
+                <p class="font-normal mb-1 text-sm text-[#40787F]">
+                  Tanggal Transaksi
+                </p>
+                <!-- Menggunakan ml-auto pada teks di sebelah kanan -->
+                <p class="font-normal mb-1 text-sm text-black ml-auto">
+                  {{ this.latestPaidBill.transactionCompletionTime | date : "dd MMM yyyy HH:mm:ss" }}
+                </p>
+              </div>
+              <div class="flex justify-between w-full mt-1">
+                <p class="font-normal mb-1 text-sm text-[#40787F]">
+                  No. Referensi
+                </p>
+                <!-- Menggunakan ml-auto pada teks di sebelah kanan -->
+                <p class="font-normal mb-1 text-sm text-black ml-auto">
+                  {{ this.latestPaidBill?.referenceNumber }}
+                </p>
+              </div>
+
+              <div class="mt-1 flex justify-between w-full">
+                <p class="font-normal mb-1 text-sm text-[#40787F]">IDPEL</p>
+                <!-- Menggunakan ml-auto pada teks di sebelah kanan -->
+                <p class="font-normal mb-1 text-sm text-black ml-auto">
+                  {{ this.latestPaidBill.dummyBillingInfo.idpel }}
+                </p>
+              </div>
+
+              <div class="mt-1 flex justify-between w-full">
+                <p class="font-normal mb-1 text-sm text-[#40787F]">Nama</p>
+                <!-- Menggunakan ml-auto pada teks di sebelah kanan -->
+                <p class="font-normal mb-1 text-sm text-black ml-auto">
+                  {{ this.latestPaidBill.user.name }}
+                </p>
+              </div>
+
+              <div class="mt-1 flex justify-between w-full">
+                <p class="font-normal mb-1 text-sm text-[#40787F]">
+                  Total Lembar Tagihan
+                </p>
+                <!-- Menggunakan ml-auto pada teks di sebelah kanan -->
+                <p class="font-normal mb-1 text-sm text-black ml-auto">1</p>
+              </div>
+
+              <div class="mt-1 flex justify-between w-full">
+                <p class="font-normal mb-1 text-sm text-[#40787F]">BL/TH</p>
+                <!-- Menggunakan ml-auto pada teks di sebelah kanan -->
+                <p class="font-normal mb-1 text-sm text-black ml-auto">
+                  {{ this.latestPaidBill.billingPeriod }}
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-col items-start">
+              <div class="mt-2 flex justify-between w-full">
+                <p class="font-semibold mb-1 text-sm text-[#40787F]">
+                  Admin Bank
+                </p>
+                <!-- Menggunakan ml-auto pada teks di sebelah kanan -->
+                <p class="font-normal mb-1 text-sm text-black ml-auto">
+                  {{ this.latestPaidBill?.adminFee | currency: "IDR" }}
+                </p>
+              </div>
+            </div>
+            <div></div>
+            <hr class="border-b mt-2 border-gray-100" />
+            <div>
+              <div class="mt-2 flex justify-between w-full">
+                <p class="font-semibold mb-1 text-sm text-[#40787F]">
+                  Total Bayar
+                </p>
+                <!-- Menggunakan ml-auto pada teks di sebelah kanan -->
+                <p class="font-semibold mb-1 text-sm text-[#40787F] ml-auto">
+                  {{ this.latestPaidBill?.amount | currency: "IDR" }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="shadow-sm bg-[#40787F] w-full text-white font-semibold font-['Open Sans'] py-2 px-4 mt-4 rounded-lg"
+            routerLink="/home"
+          >
+            Kembali ke home
+          </button>
+        </div>
+      </main>
+    </body>
+      
+  </div>
+</html>

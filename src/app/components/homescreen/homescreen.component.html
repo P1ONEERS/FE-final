@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <title>Document</title>
+  </head>
+  <div class="page">
+    <body [@fadeIn]="fadeInState">
+      <header>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center ml-8 mt-12">
+            <img class="bni w-20" src="./assets/BNI.svg" alt="BNI" />
+          </div>
+          <div class="flex items-center mt-12 mr-6">
+            <img
+              class="notif w-7 mr-2"
+              src="./assets/notifikasi.svg"
+              alt="notifikasi"
+            />
+            <button routerLink="/login" class="w-7">
+              <img src="./assets/logout.svg" alt="logout" (click)="this.loginService.logout()" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="flex mt-4 ml-8 items-center">
+        <img src="./assets/profile.svg" alt="profile" />
+        <div class="ml-3">
+          <p>Selamat Datang!</p>
+          <p>{{ name  || 'N/A'}}</p>
+        </div>
+      </div>
+
+      <div class="bg-[#40787F] p-4 rounded mt-4 ml-8 mr-8 text-white relative">
+        <div class="flex items-center w-full">
+          <p>
+            {{ showSaldo ? balanceFormatted : "Rp ***********" }}
+          </p>
+          <button
+            id="eyeButton"
+            class="ml-1 focus:outline-none"
+            (click)="toggleSaldo()"
+          >
+            <img
+              *ngIf="!showSaldo"
+              id="closeye"
+              src="./assets/eye.svg"
+              alt="closeye"
+              class="w-4"
+            />
+            <img
+              *ngIf="showSaldo"
+              id="openeye"
+              src="./assets/openeye.svg"
+              alt="openeye"
+              class="w-4"
+            />
+          </button>
+        </div>
+        <p>{{accountNumber}}</p>
+        <p>{{accountType}}</p>
+        <div class="absolute top-1/2 right-4 transform -translate-y-1/2">
+          <img src="./assets/drop.svg" alt="drop" />
+        </div>
+      </div>
+
+      <div class="flex justify-between">
+        <button class="ml-8 mt-4" id="points">
+          <img src="./assets/poin.svg" alt="poin" />
+        </button>
+        <button class="mr-8 mt-4" id="points">
+          <img src="./assets/aturmenu.svg" alt="aturmenu" />
+        </button>
+      </div>
+
+      <div class="grid grid-cols-4 gap-4 ml-8 mt-4 mr-8 mx-auto">
+        <button class="flex flex-col items-center">
+          <img class="w-20 mb-2" src="./assets/transfer.svg" alt="transfer" />
+          <span class="text-sm">Transfer</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img class="w-20 mb-2" src="./assets/e-wallet.svg" alt="e-wallet" />
+          <span class="text-sm">E-Wallet</span>
+        </button>
+        <button
+          routerLink="/pembayaran"
+          class="flex flex-col items-center relative"
+        >
+          <div class="relative">
+            <img
+              class="w-20 mb-2"
+              src="./assets/pembayaran.svg"
+              alt="pembayaran"
+            />
+            <img
+              class="absolute right-0 top-0"
+              style="transform: translateX(25%) translateY(-20%)"
+              src="./assets/new.svg"
+              alt="New"
+            />
+          </div>
+          <span class="text-sm">Pembayaran</span>
+        </button>
+        <button routerLink="/splitbill" class="flex flex-col items-center">
+          <div class="relative">
+            <img
+              class="w-20 mb-2"
+              src="./assets/splitbill.svg"
+              alt="splitbill"
+            />
+            <img
+              class="absolute right-0 top-0"
+              style="transform: translateX(25%) translateY(-20%)"
+              src="./assets/new.svg"
+              alt="New"
+            />
+          </div>
+          <span class="text-sm">Sharing bill</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img class="w-20 mb-2" src="./assets/investasi.svg" alt="investasi" />
+          <span class="text-sm">Investasi</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img class="w-20 mb-2" src="./assets/lifegoals.svg" alt="lifegoals" />
+          <span class="text-sm">Life Goals</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img class="w-20 mb-2" src="./assets/pembelian.svg" alt="pembelian" />
+          <span class="text-sm">Pembelian</span>
+        </button>
+        <button class="flex flex-col items-center">
+          <img class="w-20 mb-2" src="./assets/lainlain.svg" alt="lainlain" />
+          <span class="text-sm">Lain-Lain</span>
+        </button>
+      </div>
+
+      <div class="promo font-bold text-xl ml-8 mt-4 text-left mb-4">
+        <p>Promo & Investasi</p>
+      </div>
+
+      <div class="promo">
+        <hr class="border-b mb-4" />
+        <div class="overflow-x-auto">
+          <div class="h-36 ml-8 flex">
+            <img
+              class="mr-4 w-auto h-auto"
+              src="./assets/promo1.svg"
+              alt="Promo 1"
+            />
+            <img
+              class="mr-4 border-b-0 w-auto h-auto"
+              src="./assets/promo2.svg"
+              alt="Promo 2"
+            />
+          </div>
+        </div>
+      </div>
+
+      <footer class="homescreen">
+        <div class="relative">
+          <hr class="border-t border-gray-300 mt-4" />
+          <div class="flex justify-between py-6 mr-8 ml-8">
+            <button class="footer-btn">
+              <img src="./assets/house.svg" alt="home" class="w-8 h-8" />
+            </button>
+            <button class="footer-btn">
+              <img src="./assets/history.svg" alt="history" class="w-8 h-8" />
+            </button>
+            <div>
+              <button
+                class="footer-btn-qris absolute -top-4 left-1/2 transform -translate-x-1/2"
+              >
+                <img src="./assets/qris.svg" alt="qris" class="w-24 h-24" />
+              </button>
+            </div>
+            <button class="footer-btn">
+              <img src="./assets/star.svg" alt="favorit" class="w-8 h-8" />
+            </button>
+            <button class="footer-btn">
+              <img src="./assets/setting.svg" alt="setting" class="w-8 h-8" />
+            </button>
+          </div>
+        </div>
+      </footer>
+    </body>
+  </div>
+</html>

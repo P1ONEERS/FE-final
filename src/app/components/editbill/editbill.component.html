@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Editing Bill</title>
+    <!-- <style>
+      .center-text {
+        text-align: center;
+      }
+
+      .center-flex {
+        display: flex;
+        justify-content: center;
+      }
+      /* Adjust input layout to fit within the boundaries */
+      .div.mx-4.my-2 {
+        width: calc(
+          100% - 8px
+        ); /* Calculate width based on the margin values */
+      }
+
+      /* Adjust margin and width of the second input field */
+      .div.text-black.text-xs.font-regular.font-Open-Sans.mx-5.mt-2 {
+        margin-right: 10px; /* Adjust margin as needed */
+      }
+
+      /* Adjust input layout to fit within the boundaries */
+      .div.text-black.text-xs.font-regular.font-Open-Sans.mt-2 {
+        width: calc(50% - 1px); /* Calculate width based on the margin values */
+      }
+    </style> -->
+  </head>
+  <div class="page">
+    <body>
+      <header>
+        <nav class="flex items-center justify-between">
+          <button routerLink="/hasilscan" class="items-center ml-6">
+            <img src="./assets/back.svg" alt="Back" class="mt-12 w-6 h-6" />
+          </button>
+          <p class="text-gray-600 text-lg font-bold mt-12">Sharing Bill</p>
+          <button routerLink="/home" class="items-center mt-12 mr-6">
+            <img src="./assets/home.svg" alt="Home" class="w-6 h-6" />
+          </button>
+        </nav>
+      </header>
+
+      <div style="max-height: 700px; overflow-y: auto">
+        <div class="justify-center mt-8 ml-6 mr-6">
+          <table class="w-[350px] rounded-lg border border-[#D8D8D8] mt-8">
+            <thead>
+              <div
+                class="justify-center flex text-[#40787F] text-md font-bold font-['Open Sans'] mx-4 my-2"
+              >
+                Edit Bill
+              </div>
+              <div class="justify-between flex mt-2 mb-2 mx-28">
+                <p
+                  class="text-[#f15a23] text-xs font-regular font-['Open Sans']"
+                >
+                  {{ currentDate }}
+                </p>
+                <p
+                  class="text-[#f15a23] text-xs font-regular font-['Open Sans']"
+                >
+                  {{ currentTime }} WIB
+                </p>
+              </div>
+              <hr class="border-[#D8D8D8] w-full border-2" />
+            </thead>
+
+            <tbody>
+              <ng-container
+                *ngFor="let page of scannedResult.document.inference.pages"
+              >
+                <ng-container
+                  *ngIf="page && page.prediction && page.prediction.line_items"
+                >
+                  <tr *ngFor="let item of page.prediction.line_items">
+                    <td>
+                      <div class="mx-4 my-2">
+                        <input
+                          type="text"
+                          class="text-black text-sm font-semibold font-['Open Sans'] w-full md:w-auto"
+                          [(ngModel)]="item.description"
+                        />
+                        <div class="flex justify-end">
+                          <div
+                            class="text-black text-xs font-regular font-['Open Sans'] mx-20 mt-2"
+                          >
+                            <input
+                              type="text"
+                              class="text-black text-xs font-regular font-['Open Sans'] w-full md:w-auto"
+                              [(ngModel)]="item.quantity"
+                            />
+                            X
+                          </div>
+                          <div
+                            class="text-black text-xs font-regular font-['Open Sans'] mt-2"
+                          >
+                            <input
+                              type="text"
+                              class="text-black text-xs font-regular font-['Open Sans'] w-full md:w-auto"
+                              [(ngModel)]="item.total_amount"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="border-[#bababa] mx-4 border-dashed" />
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+
+              <!-- Add the total payment section here -->
+              <!-- <div class="flex justify-between mx-4 my-4">
+                <div
+                  class="black text font-semibold font-['Open Sans'] text-sm"
+                >
+                  Total Amount
+                </div>
+                <div class="black text font-regular font-['Open Sans'] text-xs">
+                  {{
+                    scannedResult.document.inference.pages[0].prediction
+                      .total_amount.value
+                  }}
+                </div>
+              </div> -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="flex justify-between mx-6 my-8">
+        <button
+          class="rounded-lg bg-[#717892] p-2 font-['Open Sans'] font-semibold text-white w-80 mr-2"
+          routerLink="/hasilscan"
+        >
+          Save Changes
+        </button>
+        <button
+          class="rounded-lg bg-[#40787F] p-2 font-['Open Sans'] font-semibold text-white w-80"
+          routerLink="/hasilscan"
+        >
+          Cancel
+        </button>
+      </div>
+    </body>
+  </div>
+</html>
