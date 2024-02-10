@@ -3,11 +3,14 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "FinalProjectFix": {
+    "angularfiebase-authentication": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
       "root": "",
@@ -17,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/final-project-fix",
+            "outputPath": "dist/angularfiebase-authentication",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -28,9 +31,12 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "serviceWorker": true
+
           },
           "configurations": {
             "production": {
@@ -69,10 +75,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "FinalProjectFix:build:production"
+              "browserTarget": "angularfiebase-authentication:build:production"
             },
             "development": {
-              "browserTarget": "FinalProjectFix:build:development"
+              "browserTarget": "angularfiebase-authentication:build:development"
+              
+
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "FinalProjectFix:build"
+            "browserTarget": "angularfiebase-authentication:build"
           }
         },
         "test": {
@@ -103,5 +111,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "090dfa50-1a6b-492b-846b-cdfedbbf1516"
   }
 }

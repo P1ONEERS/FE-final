@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Sharing Bill</title>
+  </head>
+  <div class="page">
+    <body>
+      <header>
+        <nav class="flex items-center justify-between">
+          <button routerLink="/editbill" class="items-center mt-12 ml-6">
+            <img src="./assets/back.svg" alt="Back" class="w-6 h-6" />
+          </button>
+          <p class="text-gray-600 text-lg font-bold mt-12">Sharing Bill</p>
+          <button routerLink="/home" class="items-center mt-12 mr-6">
+            <img src="./assets/home.svg" alt="Home" class="w-6 h-6" />
+          </button>
+        </nav>
+      </header>
+      <main>
+        <div class="ml-6 mr-6 mt-6">
+          <div class="text-black font-semibold text-lg font-['Open Sans']">
+            Tambah Teman
+          </div>
+          <div class="text-black font-regular text-xs font-['Open Sans']">
+            Tambahkan teman sharing bill mu
+          </div>
+        </div>
+
+        <div class="overflow-x-auto flex mr-6 ml-6">
+          <div
+            (click)="openPopup()"
+            class="flex items-center justify-end flex-shrink-0 flex-none"
+          >
+            <img
+              src="./assets/add.svg"
+              alt="Tambah Teman"
+              class="w-12 h-12 mr-2"
+            />
+          </div>
+
+          <div class="flex-col ml-2 mt-8 items-center flex-shrink-0 flex-none">
+            <img src="./assets/owner.svg" class="w-14 h-14" />
+            <p
+              class="mt-2 text-center text-sm font-semibold font-['Open Sans'] text-[#40787F]"
+            >
+              Anda
+            </p>
+          </div>
+
+          <div
+            *ngFor="let temanToShow of selectedFriendsToShow"
+            class="flex-col ml-2 mt-8 items-center flex-shrink-0 flex-none"
+          >
+            <img
+              [src]="temanService.getRandomImage()"
+              alt="Tambah Teman"
+              class="w-14 h-14"
+            />
+
+            <p
+              class="mt-2 text-center text-sm font-semibold text-[#40787F] whitespace-nowrap overflow-hidden text-ellipsis w-12"
+            >
+              {{ temanToShow.name }}
+            </p>
+          </div>
+        </div>
+
+        <hr class="mt-2 ml-6 mr-6 border-[#D8D8D8]" />
+
+        <div
+          *ngIf="showPopup"
+          class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
+        >
+          <div class="bg-white p-6 rounded-lg" style="width: 300px">
+            <div class="flex justify-between">
+              <div>
+                <h2 class="text-md font-semibold font-['Open Sans']">
+                  Tambah Teman
+                </h2>
+                <p class="text-xs font-regular font-['Open Sans'] mb-4">
+                  Isi data teman sharing bill mu
+                </p>
+              </div>
+              <button
+                type="button"
+                (click)="closePopup()"
+                class="flex items-center justify-end -mt-8"
+              >
+                <img
+                  src="./assets/close.svg"
+                  alt="Close"
+                  class="w-4 h-4 ml-4"
+                />
+              </button>
+            </div>
+
+            <form (ngSubmit)="simpanTeman()">
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Nama"
+                  [(ngModel)]="teman.name"
+                  (input)="validasiNama()"
+                  name="name"
+                  class="text-md border rounded-lg w-full p-2"
+                  required
+                />
+              </div>
+              <div class="mb-4">
+                <input
+                  type="number"
+                  id="noTelp"
+                  placeholder="Nomor WhatsApp"
+                  [(ngModel)]="teman.noTelp"
+                  name="noTelp"
+                  class="text-md border rounded-lg w-full p-2"
+                  required
+                />
+              </div>
+              <p
+                *ngIf="errorMessage"
+                [ngClass]="{ 'shake-once': shakeError }"
+                class="text-red-500 mb-4 text-xs"
+              >
+                {{ errorMessage }}
+              </p>
+              <button
+                type="submit"
+                class="w-full bg-[#40787F] text-white rounded-lg p-2"
+              >
+                Simpan
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div *ngIf="!showPopup" class="relative mt-2 ml-6 mr-6 mb-4">
+          <input
+            type="text"
+            id="search"
+            placeholder="Cari Nama Teman"
+            [(ngModel)]="kataKunciPencarian"
+            name="search"
+            class="text-md border rounded-lg w-full p-2"
+            (input)="cariTeman()"
+            (focus)="onInputFocus()"
+            (blur)="onInputBlur()"
+          />
+          <img
+            *ngIf="!isInputFocused && !kataKunciPencarian"
+            src="./assets/search.svg"
+            alt="Search"
+            class="absolute right-0 top-0 mt-3 mr-4 w-4 h-4"
+          />
+          <button
+            *ngIf="isInputFocused || kataKunciPencarian"
+            type="button"
+            (click)="batalPencarian()"
+            class="absolute right-0 top-0 mt-3 mr-4"
+          >
+            <img src="./assets/close_search.svg" alt="Close" class="w-4 h-4" />
+          </button>
+        </div>
+
+        <!-- List Teman -->
+        <div style="max-height: 440px; overflow-y: auto">
+          <div
+            *ngFor="let teman of filteredTemanList || temanList"
+            class="flex justify-center ml-6 mr-6 mt-6"
+          >
+            <img
+              [src]="temanService.getRandomImage()"
+              alt="Random Image"
+              class="w-12 h-12"
+            />
+            <div class="flex justify-between w-full">
+              <div class="ml-4">
+                <p
+                  class="text-md font-semibold font-['Open Sans'] text-gray-600"
+                >
+                  {{ teman.name }}
+                </p>
+                <p
+                  class="text-sm font-regular font-['Open Sans'] text-gray-400"
+                >
+                  {{ teman.noTelp }}
+                </p>
+              </div>
+              <input
+                type="checkbox"
+                name="selectedFriend"
+                [value]="teman"
+                (change)="selectFriend(teman)"
+                [checked]="isSelectedToShow(teman)"
+                class="ml-auto w-4 h-4 mt-4"
+              />
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- <footer *ngIf="!showPopup" class="flex items-center justify-center">
+        <button
+          type="button"
+          (click)="saveSelectedFriends()"
+          routerLink="/summarybill"
+          class="rounded-lg bg-[#40787F] p-2 ml-4 mr-4 text-white text-center mt-8 font-semibold font-['Open Sans'] w-full text-sm"
+        >
+          Lanjut
+        </button>
+      </footer> -->
+      <footer *ngIf="!showPopup" class="flex items-center justify-center">
+        <button
+          type="button"
+          (click)="saveSelectedFriends()"
+          class="fixed bottom-7 rounded-lg bg-[#40787F] p-2 text-white text-center font-semibold font-['Open Sans'] w-[350px] text-sm"
+        >
+          Lanjut
+        </button>
+      </footer>
+    </body>
+  </div>
+</html>

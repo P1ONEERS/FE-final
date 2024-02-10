@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Sharing Bill</title>
+  </head>
+  <div class="page">
+    <body [@fadeIn]="fadeInState">
+      <header>
+        <nav class="flex items-center justify-between">
+          <div class="items-center ml-12 justify-center"></div>
+          <p class="text-gray-600 text-lg font-bold mt-12">Sharing Bill</p>
+          <button routerLink="/home" class="items-center justify-end mr-6">
+            <img src="./assets/home.svg" alt="Close" class="mt-12 w-6 h-6" />
+          </button>
+        </nav>
+      </header>
+
+      <div class="mt-8">
+        <div
+          class="flex items-start bg-white p-1 border-white shadow-md rounded-xl my-6 mx-6 overflow-hidden"
+        >
+          <div
+            [class.active]="isBillAktif"
+            class="flex-1 p-2 text-center cursor-pointer rounded-xl transition duration-500 ease-in-out transform relative"
+            (click)="onSwitchButtonClick(true)"
+          >
+            <div
+              class="absolute inset-0 bg-[#F15A23] font-['Open Sans'] text-white rounded-xl transform {{
+                isBillAktif ? 'translate-x-0' : 'translate-x-full'
+              }} transition-transform duration-500"
+            ></div>
+            <div
+              class="relative z-10 {{
+                isBillAktif ? 'text-white' : 'text-[#F15A23]'
+              }}"
+            >
+              Bill Aktif
+            </div>
+          </div>
+          <div
+            [class.active]="!isBillAktif"
+            class="flex-1 p-2 text-center cursor-pointer rounded-xl transition duration-500 ease-in-out transform relative"
+            (click)="onSwitchButtonClick(false)"
+          >
+            <div
+              class="absolute inset-0 bg-white text-[#F15A23] font-['Open Sans'] rounded-lg transform {{
+                !isBillAktif ? 'translate-x-full' : 'translate-x-0'
+              }} transition-transform duration-500"
+            ></div>
+
+            <div
+              class="relative z-10 {{
+                !isBillAktif ? 'text-white' : 'text-[#F15A23]'
+              }}"
+            >
+              Riwayat
+            </div>
+          </div>
+        </div>
+
+        <!-- Ini screen untuk bill yang aktif/baru saja dibuat -->
+        <div *ngIf="isBillAktif">
+          <div *ngIf="billService.getActiveBill().length > 0">
+            <div
+              *ngFor="let bill of billService.getActiveBill(); let i = index"
+            >
+              <div *ngIf="bill.status !== 'closed'">
+                <div
+                  class="flex justify-center my-6 mx-6 h-32 border border-gray-300 rounded-md relative"
+                >
+                  <p
+                    class="absolute top-0 left-0 text-black font-bold text-sm p-4"
+                  >
+                    {{ tempat }}
+                  </p>
+                  <div class="absolute flex top-6 left-0">
+                    <p class="text-black font-normal text-xs p-4">
+                      {{ tanggal }}
+                    </p>
+                    <p class="text-black font-normal text-xs p-4">{{ jam }}</p>
+                  </div>
+                  <div class="flex items-left mt-4 ml-56">
+                    <div
+                      class="flex ml-1"
+                      style="max-width: 250px; overflow-x: auto"
+                    >
+                      <img
+                        *ngFor="let user of usertampil; let i = index"
+                        [src]="temanService.getRandomImage()"
+                        [alt]="'Deskripsi gambar ' + (i + 1)"
+                        class="absolute top-4"
+                        [ngStyle]="{ right: 4 * i + 'rem' }"
+                        class="w-8 h-8 object-cover"
+                      />
+                    </div>
+                  </div>
+
+                  <p
+                    class="absolute top-12 left-0 font-bold text-lg p-4 text-[#F15A23]"
+                  >
+                    IDR {{ calculateTotalForAllUsers() }}
+                  </p>
+                  <div class="absolute flex p-4 left-0 mt-20">
+                    <p class="text-[#BABABA] font-normal text-xs">
+                      {{ jumlahTeman }} peserta
+                    </p>
+                    <p class="text-[#BABABA] font-normal text-xs mx-2">|</p>
+                    <p class="text-[#BABABA] font-normal text-xs">
+                      {{ jumlahMenu }} menu
+                    </p>
+                  </div>
+                  <button
+                    (click)="togglePopup()"
+                    class="absolute bg-[#40787F] p-2 mb-2 rounded-xl bottom-0 right-0 mr-4"
+                  >
+                    <p class="text-white font-normal text-xs w-20">
+                      Cek Status
+                    </p>
+                  </button>
+
+                  <div [@popupAnimation]="popupAnimationState" class="popup">
+                    <!-- Isi pop-up disini -->
+                    <p class="text-black font-semibold text-sm">
+                      Status Pembayaran
+                    </p>
+                    <p class="text-gray-400 font-normal text-xs mt-1">
+                      Ubah status pembayaran temanmu
+                    </p>
+                    <p class="text-gray-400 font-semibold text-xs mt-4">
+                      Teman Sharing Bill ({{ jumlahTeman }})
+                    </p>
+
+                    <!--Cek status-->
+                    <div
+                      class="flex items-center mt-4"
+                      *ngFor="let user of usertampil; let i = index"
+                    >
+                      <div class="flex items-center">
+                        <img
+                          [src]="temanService.getRandomImage()"
+                          alt="Teman"
+                          class="w-12 h-12"
+                        />
+                        <div class="flex flex-col ml-4 items-start">
+                          <p
+                            class="text-xs font-medium font-['Open Sans'] text-gray-600"
+                          >
+                            {{ user.name }}
+                          </p>
+                          <p
+                            class="mt-1 text-md font-bold font-['Open Sans'] text-gray-600"
+                          >
+                            IDR {{ calculateTotalPerUser(user) }}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="flex justify-between items-center ml-auto">
+                        <img
+                          (click)="toggleSwitch(i)"
+                          [src]="
+                            isSwitchActive[i]
+                              ? './assets/switchon.svg'
+                              : './assets/switchoff.svg'
+                          "
+                          alt="Toggle Switch"
+                          class="cursor-pointer w-12 h-5"
+                        />
+                      </div>
+                    </div>
+
+                    <!--Last Cek status-->
+
+                    <div class="flex justify-between mt-8">
+                      <button
+                        (click)="togglePopup()"
+                        class="rounded-lg bg-[#717892] p-2 font-['Open Sans'] font-semibold text-white w-80 mr-2"
+                      >
+                        Simpan
+                      </button>
+                      <button
+                        (click)="openConfirmation()"
+                        class="rounded-lg bg-[#40787F] p-2 font-['Open Sans'] font-semibold text-white w-80"
+                      >
+                        Tutup Bill
+                      </button>
+                    </div>
+                    <!-- <div
+                *ngIf="showConfirmationNotification"
+                [@popupAnimation]="popupAnimationState"
+                class="popup confirmation-notification"
+              >
+                <p>Apakah Anda yakin untuk menutup bill?</p>
+                <div class="flex mt-5">
+                  <button
+                    (click)="confirmCloseBill()"
+                    class="rounded-lg bg-[#717892] p-2 font-['Open Sans'] font-semibold text-white w-80 mr-2"
+                  >
+                    Ya
+                  </button>
+                  <button
+                    (click)="cancelCloseBill()"
+                    class="rounded-lg bg-[#40787F] p-2 font-['Open Sans'] font-semibold text-white w-80"
+                  >
+                    Tidak
+                  </button>
+                </div>
+              </div> -->
+
+                    <div
+                      *ngIf="showConfirmationNotification"
+                      [@popupAnimation]="popupAnimationState"
+                      class="popup confirmation-notification"
+                    >
+                      <p>Apakah Anda yakin untuk menutup bill?</p>
+                      <div class="flex mt-5">
+                        <button
+                          (click)="confirmCloseBill()"
+                          class="rounded-lg bg-[#717892] p-2 font-['Open Sans'] font-semibold text-white w-80 mr-2"
+                        >
+                          Ya
+                        </button>
+                        <button
+                          (click)="cancelCloseBill()"
+                          class="rounded-lg bg-[#40787F] p-2 font-['Open Sans'] font-semibold text-white w-80"
+                        >
+                          Tidak
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div
+            *ngIf="showConfirmationNotification"
+            class="confirmation-notification"
+          >
+            <p>Apakah Anda yakin untuk menutup bill?</p>
+            <button (click)="confirmCloseBill()">Ya</button>
+            <button (click)="cancelCloseBill()">Tidak</button>
+          </div> -->
+          <div *ngIf="billService.getActiveBill().length === 0">
+            <div class="mt-8 flex justify-center items-center">
+              <img src="./assets/riwayat.svg" alt="Riwayat" class="w-48 h-48" />
+            </div>
+
+            <p class="text-gray-300 font-bold text-sm text-center mt-4">
+              Kamu belum memiliki sharing bill yang aktif
+            </p>
+          </div>
+        </div>
+
+        <!-- Ini screen riwayat untuk bill yang telah selesai -->
+      </div>
+
+      <footer class="flex justify-end mr-8">
+        <label for="my-file-input" class="fixed bottom-12 z-auto">
+          <img src="./assets/tambah.svg" alt="Tambah" />
+          <!-- app.component.html -->
+          <div *ngIf="loading" class="loading-overlay">
+            <div class="loading-spinner"></div>
+            <p class="ml-3 font-semibold text-white font-['Open Sans']">
+              Loading...
+            </p>
+          </div>
+        </label>
+        <input
+          type="file"
+          id="my-file-input"
+          style="display: none"
+          (change)="startScanning($event)"
+        />
+               
+      </footer>
+    </body>
+      
+  </div>
+</html>
+<!-- <footer class="flex justify-end mr-8">
+        <label for="my-file-input">
+          <img
+            class="fixed bottom-10 z-auto"
+            src="./assets/tambah.svg"
+            alt="Tambah"
+          />
+        </label>
+        <input
+          type="file"
+          id="my-file-input"
+          style="display: none"
+          (change)="startScanning($event)"
+        />
+      </footer> -->
+<!-- </div> -->
+<!-- </body> -->
+<!-- </div> -->
+<!-- </html> -->

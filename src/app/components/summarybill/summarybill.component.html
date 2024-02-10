@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Sharing Bill</title>
+  </head>
+  <div class="page">
+    <header>
+      <nav class="flex items-center justify-between">
+        <button routerLink="/splitbill" class="items-center mt-12 ml-6">
+          <img src="./assets/back.svg" alt="Back" class="w-6 h-6" />
+        </button>
+        <p class="text-gray-600 text-lg font-bold mt-12">Sharing Bill</p>
+        <button routerLink="/home" class="items-center mt-12 mr-6">
+          <img src="./assets/home.svg" alt="Home" class="w-6 h-6" />
+        </button>
+      </nav>
+    </header>
+    <body>
+      <div class="justify-center ml-6 mt-6">
+        <div class="font-semibold text-xs font-['Open Sans'] text-[#F15A23]">
+          Jumlah Total
+        </div>
+        <div class="mt-2 text-black font-regular text-xs font-['Open Sans']">
+          Tanggal Bill : {{ currentDate }} | {{ currentTime }} WIB
+        </div>
+        <div
+          class="mt-2 font-semibold text-xs font-['Open Sans'] text-[#F15A23]"
+        >
+          IDR {{ total }}
+        </div>
+      </div>
+
+      <div *ngFor="let teman of daftarteman">
+        <div class="flex items-center ml-6 mt-8">
+          <img
+            [src]="temanService.getRandomImage()"
+            alt="Teman"
+            class="w-12 h-12"
+          />
+          <div class="flex flex-col ml-4 items-start">
+            <p class="text-xs font-medium font-['Open Sans'] text-gray-600">
+              {{ teman.name }}
+            </p>
+            <p class="mt-1 text-md font-bold font-['Open Sans'] text-gray-600">
+              IDR {{ totalPrices[teman.id_user] }}
+            </p>
+          </div>
+        </div>
+
+        <hr class="mt-6 ml-6 mr-6 border-[#D8D8D8]" />
+
+        <div class="w-full">
+          <table class="w-full">
+            <tr>
+              <td class="w-full">
+                <div
+                  *ngFor="let item of availableItemsForAllUsers"
+                  class="ml-6 my-2 flex justify-between w-full items-center"
+                >
+                  <p
+                    class="text-black text-sm font-semibold font-['Open Sans']"
+                  >
+                    {{ item.name }}
+                  </p>
+                  <div class="flex mt-1 mr-12">
+                    <div
+                      class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                    >
+                      x {{ item.quantity }}
+                      <!-- X {{ qtyhasilscan[data.indexOf(item)] }} -->
+                    </div>
+                    <div
+                      class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                    >
+                      {{ item.price }}
+                    </div>
+                    <!-- Update the [disabled] attribute in the template -->
+                    <input
+                      type="checkbox"
+                      class="ml-auto w-4 h-4"
+                      id="{{ item.id_item }}"
+                      [disabled]="teman?.disabledItems?.[item.id_item]"
+                      (click)="
+                        addItem(
+                          teman.id_user,
+                          item.id_item,
+                          item.name,
+                          item.quantity,
+                          item.price
+                        )
+                      "
+                    />
+                  </div>
+
+                  <div
+                    *ngIf="showPopup"
+                    class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 rounded-md"
+                  >
+                    <div class="popup-content">
+                      <p class="popup-title">
+                        {{ selectedItemForAdjustment.itemName }}
+                      </p>
+
+                      <!-- Container increment decrement qty item -->
+
+                      <div class="flex items-center">
+                        <div class="flex items-center">
+                          <img
+                            [src]="temanService.getRandomImage()"
+                            alt="RandomImage"
+                            class="w-12 h-12"
+                          />
+
+                          <div></div>
+
+                          <div class="flex flex-col ml-4 items-start">
+                            <p
+                              class="mt-1 text-md font-bold font-['Open Sans'] text-gray-600"
+                            >
+                              {{
+                                getTemanName(selectedItemForAdjustment.userId)
+                              }}
+                            </p>
+
+                            <p class="text-xs text-gray-600">
+                              memilih
+                              {{ selectedItemForAdjustment.quantity }} item
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="flex justify-between ml-auto">
+                          <!-- tombol (-) -->
+                          <button (click)="decrement()">
+                            <!-- [disabled]="showLastCount" -->
+                            <i
+                              class="mr-2 fas fa-minus-circle text-[#F15A23]"
+                            ></i>
+                          </button>
+                          <p class="text-gray-600 w-4 items-center text-center">
+                            {{
+                              lastCount[selectedItemForAdjustment.userId][
+                                selectedItemForAdjustment.id
+                              ]
+                            }}
+                          </p>
+                          <!-- tombol (+) -->
+                          <button (click)="increment()">
+                            <!-- [disabled]="showLastCount" -->
+                            <i
+                              class="ml-2 mr-2 fas fa-plus-circle text-[#F15A23]"
+                            ></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="flex flex-row justify-between mt-6">
+                        <!-- tombol batal untuk close popup -->
+                        <button
+                          class="rounded-lg bg-gray-400 p-2 text-white text-sm font-semibold font-['Open Sans'] w-40 mr-2"
+                          (click)="saveAdjustQtyPopup()"
+                        >
+                          Batal
+                        </button>
+                        <!-- tombol simpan routerlink aja buat balik ke halaman  -->
+                        <button
+                          class="rounded-lg bg-[#40787F] p-2 text-white text-sm text-center font-semibold font-['Open Sans'] w-40 ml-2"
+                          type="button"
+                          routerLink="/summarybill"
+                          (click)="saveAdjustQtyPopup()"
+                        >
+                          Simpan
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  (click)="toggleDetailBill()"
+                  class="ml-6 flex justify-between items-center text-black font-semibold text-xs font-['Open Sans'] ml-4"
+                >
+                  <ng-container *ngIf="showDetailBill; else showDetailIcon">
+                    <!-- Icon for Hide Detail Bill (e.g., Font Awesome icon) -->
+                    <span class="mr-5">Detail Bill</span>
+
+                    <i class="fas fa-angle-up mt-1"></i>
+                  </ng-container>
+                  <ng-template #showDetailIcon>
+                    <!-- Icon for Show Detail Bill (e.g., Font Awesome icon) -->
+                    <span class="mr-5">Detail Bill</span>
+                    <i class="fas fa-angle-down mt-1"></i>
+                  </ng-template>
+                </button>
+
+                <hr class="border-[#D8D8D8] mt-2 mx-6" />
+
+                <!-- Uncomment the *ngIf directive -->
+                <div *ngIf="showDetailBill">
+                  <div
+                    class="mx-6 mt-2 flex justify-between w-full items-center"
+                  >
+                    <p
+                      class="text-black text-xs font-semibold font-['Open Sans']"
+                    >
+                      + Pajak
+                    </p>
+                    <div class="flex mr-12 mt-1">
+                      <div
+                        class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                      >
+                        30.000
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ml-6 flex justify-between w-full items-center">
+                    <p
+                      class="text-black text-xs font-semibold font-['Open Sans']"
+                    >
+                      + Biaya Layanan
+                    </p>
+                    <div class="flex mt-1 mr-12">
+                      <div
+                        class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                      >
+                        30.000
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ml-6 flex justify-between w-full items-center">
+                    <p
+                      class="text-black text-xs font-semibold font-['Open Sans']"
+                    >
+                      - Diskon
+                    </p>
+                    <div class="flex mt-1 mr-12">
+                      <div
+                        class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                      >
+                        0
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ml-6 flex justify-between w-full items-center">
+                    <p
+                      class="text-black text-xs font-semibold font-['Open Sans']"
+                    >
+                      Jumlah Item
+                    </p>
+                    <div class="flex mt-1 mr-12">
+                      <div
+                        class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                      >
+                        10
+                      </div>
+                    </div>
+                  </div>
+                  <hr class="mx-6 border-[#D8D8D8] border-dashed mt-2" />
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-center">
+        <button
+          type="button"
+          routerLink="/riwayatbill"
+          (click)="next()"
+          class="fixed bottom-7 rounded-lg bg-[#40787F] p-2 text-white text-center font-semibold font-['Open Sans'] w-[350px] text-sm"
+        >
+          Bagikan (ini ke riwayatbill)
+        </button>
+      </footer>
+    </body>
+  </div>
+</html>

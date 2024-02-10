@@ -1,0 +1,9 @@
+@keyframes shake-once {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-10px); }
+    20%,30% { transform: translateX(10px); }
+  }
+  
+  .shake-once {
+    animation: shake-once 0.3s ease-in-out;
+  }

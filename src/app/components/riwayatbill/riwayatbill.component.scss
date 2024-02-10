@@ -1,0 +1,52 @@
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Latar belakang transparan abu-abu */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Pastikan lebih tinggi dari elemen lainnya */
+}
+
+.loading-spinner {
+  border: 4px solid #f3f3f3; /* Warna border */
+  border-top: 4px solid #f15a23; /* Warna border bagian atas (untuk efek putar) */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite; /* Animasi putar */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Latar belakang transparan */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Pastikan lebih tinggi dari elemen lainnya, kecuali loading overlay */
+}
+
+.success-popup {
+  background-color: white; /* Warna background popup */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

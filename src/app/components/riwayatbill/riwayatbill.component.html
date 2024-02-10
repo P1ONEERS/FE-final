@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Sharing Bill</title>
+  </head>
+  <div class="page">
+    <body>
+      <header>
+        <nav class="flex items-center justify-between">
+          <button routerLink="/splitbill" class="items-center mt-12 ml-6">
+            <img src="./assets/back.svg" alt="Back" class="w-6 h-6" />
+          </button>
+          <p class="text-gray-600 text-lg font-bold mt-12">Sharing Bill</p>
+          <button
+            routerLink="/home"
+            class="flex items-center justify-end mt-12"
+          >
+            <img src="./assets/home.svg" alt="Close" class="w-6 h-6 mr-6" />
+          </button>
+        </nav>
+      </header>
+
+      <div class="justify-center ml-6 mt-6">
+        <div class="font-semibold text-xs font-['Open Sans'] text-[#F15A23]">
+          Detail Bill
+        </div>
+        <div class="mt-2 text-black font-regular text-xs font-['Open Sans']">
+          Tanggal Bill : {{ currentDate }} {{ currentTime }} WIB
+        </div>
+        <div
+          class="mt-2 font-semibold text-xs font-['Open Sans'] text-[#F15A23]"
+        >
+          IDR {{ calculateTotalForAllUsers() }}
+        </div>
+        <p class="text-gray-600 font-semibold text-xs mt-4">
+          Teman Sharing Bill
+        </p>
+
+        <div style="max-height: 550px; overflow-y: auto">
+          <div *ngFor="let user of usertampil; let i = index">
+            <div class="flex items-center mt-6">
+              <img
+                [src]="temanService.getRandomImage()"
+                alt="Teman"
+                class="w-12 h-12"
+              />
+              <div class="flex flex-col ml-4 items-start">
+                <p class="text-xs font-medium font-['Open Sans'] text-gray-600">
+                  {{ user.name }}
+                </p>
+                <p
+                  class="mt-1 text-md font-bold font-['Open Sans'] text-gray-600"
+                >
+                  IDR {{ calculateTotalPerUser(user) }}
+                </p>
+              </div>
+            </div>
+            <hr class="mt-6 mr-6 border-[#D8D8D8]" />
+
+            <div class="w-full">
+              <table class="w-full">
+                <tr>
+                  <td class="w-full">
+                    <div
+                      *ngFor="let item of dataTemandanItem[user.id_user]"
+                      class="flex justify-between w-full items-center"
+                    >
+                      <p
+                        class="text-black text-sm mt-2 font-semibold font-['Open Sans']"
+                      >
+                        {{ item.name }}
+                      </p>
+                      <div class="flex mt-1 mr-12">
+                        <div
+                          class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                        >
+                          x {{ item.quantity }}
+                          <!-- X {{ qtyhasilscan[data.indexOf(item)] }} -->
+                        </div>
+                        <div
+                          class="text-black text-xs font-regular font-['Open Sans'] ml-4"
+                        >
+                          {{ item.price }}
+                        </div>
+
+                        <!-- Update the [disabled] attribute in the template -->
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <hr class="mt-2 mr-6 border-[#D8D8D8] border-dashed" />
+          </div>
+        </div>
+      </div>
+
+      <!-- <footer class="flex items-center justify-center">
+        <button
+          type="button"
+          routerLink="/splitbill"
+          class="fixed bottom-7 rounded-lg bg-[#40787F] p-2 text-white text-center font-semibold font-['Open Sans'] w-[350px] text-sm"
+        >
+          Go to active bill
+        </button>
+        <button
+          (click)="shareData()"
+          class="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Share ke Whatsapp
+        </button> -->
+      <!-- </footer> -->
+      <div class="flex items-center justify-center">
+        <button
+          (click)="shareData()"
+          class="bg-[#40787F] text-white px-4 py-2 rounded"
+          [disabled]="loading"
+        >
+          Share ke Whatsapp
+        </button>
+        <div *ngIf="loading" class="loading-overlay">
+          <div class="loading-spinner"></div>
+          <p class="ml-3 font-semibold text-white font-['Open Sans']">
+            Loading...
+          </p>
+        </div>
+        <div *ngIf="showSuccessPopup" class="overlay">
+          <div class="success-popup">
+            <div class="flex items-center justify-center">
+              <i class="fas fa-circle-check fa-4x text-[#40787F]"></i>
+            </div>
+            <!-- Ganti dengan path menuju gambar GIF -->
+            <p class="mt-2 text-sm">Berhasil dikirim ke WhatsApp</p>
+          </div>
+        </div>
+      </div>
+    </body>
+      
+  </div>
+</html>

@@ -1,0 +1,37 @@
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+/* Hover effect for selected friend */
+.selected-friend:hover {
+  @apply bg-green-100; /* Replace with the desired green color class from Tailwind */
+}
+
+/* Remove default focus outline */
+.focus\:ring {
+  @apply outline-none;
+}
+
+/* Add border and border-radius for clicked effect */
+.clicked {
+  @apply ring-2 ring-[#40787F] rounded-full;
+}
+
+/* Styles for adjustqty-popup */
+.adjustqty-popup {
+  @apply fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 rounded-md;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Styles for popup content */
+.popup-content {
+  @apply bg-white p-4 rounded-lg max-w-md w-[300px];
+}
+
+/* Styles for popup title */
+.popup-title {
+  @apply text-xl font-bold mb-4;
+}
+
+/* Styles for save button */
+.save-button {
+  @apply bg-[#40787F] text-white p-2 rounded-md cursor-pointer text-base font-bold;
+}

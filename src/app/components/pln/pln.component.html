@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Pembayaran</title>
+  </head>
+  <div class="page">
+    <body [@fadeIn]="fadeInState">
+      <header>
+        <nav class="flex items-center justify-between">
+          <button routerLink="/pembayaran" class="items-center mt-12 ml-6">
+            <img src="./assets/back.svg" alt="Back" class="w-6 h-6" />
+          </button>
+          <p class="text-gray-600 text-lg font-bold mt-12">PLN Pascabayar</p>
+          <button routerLink="/home" class="items-center mt-12 mr-6">
+            <img src="./assets/home.svg" alt="Home" class="w-6 h-6" />
+          </button>
+        </nav>
+      </header>
+      <main class="mt-8">
+        <p class="text-gray-600 text-lg text-center mb-2 font-bold">
+          Pembayaran PLN Pascabayar
+        </p>
+        <hr class="border-b border-gray-300 mx-8" />
+        <div class="m-8">
+          <div class="border shadow-md p-6 rounded">
+            <div class="flex flex-col items-start">
+              <label class="font-semibold mb-2">Rekening Debet</label>
+
+              <select
+                id="rekening"
+                [(ngModel)]="selectedRekening"
+                class="w-full appearance-none py-2 pr-8 border-b border-gray-400 leading-tight focus:outline-none focus:shadow-outline-gray text-slate-500 bg-white"
+                style="background-color: transparent; margin: 0"
+              >
+                <option
+                  *ngFor="let rek of rekeningOptions"
+                  [value]="rek.norek"
+                  class="text-orange-500"
+                >
+                  {{ rek.norek }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div
+            class="flex items-start bg-white p-1 border-white shadow-md rounded-xl my-6 overflow-hidden"
+          >
+            <div
+              [class.active]="isBillAktif"
+              class="flex-1 p-2 text-center cursor-pointer rounded-xl transition duration-500 ease-in-out transform relative"
+              (click)="onSwitchButtonClick(true)"
+            >
+              <div
+                class="absolute inset-0 bg-[#F15A23] font-['Open Sans'] text-white rounded-xl transform {{
+                  isBillAktif ? 'translate-x-0' : 'translate-x-full'
+                }} transition-transform duration-500"
+              ></div>
+              <div
+                class="relative z-10 {{
+                  isBillAktif ? 'text-white' : 'text-[#F15A23]'
+                }}"
+              >
+                Daftar Favorit
+              </div>
+            </div>
+            <div
+              [class.active]="!isBillAktif"
+              class="flex-1 p-2 text-center cursor-pointer rounded-xl transition duration-500 ease-in-out transform relative"
+              (click)="onSwitchButtonClick(false)"
+            >
+              <div
+                class="absolute inset-0 bg-white text-[#F15A23] font-['Open Sans'] rounded-lg transform {{
+                  !isBillAktif ? 'translate-x-full' : 'translate-x-0'
+                }} transition-transform duration-500"
+              ></div>
+
+              <div
+                class="relative z-10 {{
+                  !isBillAktif ? 'text-white' : 'text-[#F15A23]'
+                }}"
+              >
+                Input Baru
+              </div>
+            </div>
+          </div>
+
+          <div class="border shadow-md p-6 mt-5 rounded" *ngIf="isBillAktif">
+            <div class="flex flex-col items-start">
+              <p class="font-semibold">IDPEL</p>
+              <select
+                [(ngModel)]="selectedFavoriteIdPel"
+                class="w-full appearance-none py-2 pr-8 border-b border-gray-400 leading-tight focus:outline-none focus:shadow-outline-gray text-slate-500 bg-white"
+                style="background-color: transparent; margin: 0"
+                required
+              >
+                <option value="" disabled selected>Pilih</option>
+                <option
+                  *ngFor="let favorite of favoriteList"
+                  [value]="favorite.idpel"
+                >
+                  {{ favorite.name }}
+                  {{ selectedFavoriteIdPel }}
+                </option>
+              </select>
+
+              <div
+                *ngIf="!isOptionSelected() && submitted"
+                class="text-red-500"
+              >
+                Pilih opsi favorit
+              </div>
+            </div>
+          </div>
+
+          <div class="border shadow-md p-6 mt-5 rounded" *ngIf="!isBillAktif">
+            <div class="flex flex-col items-start">
+              <p class="font-semibold">IDPEL</p>
+              <input
+                type="numeric"
+                inputmode="numeric"
+                class="w-full mt-2 border-b text-sm focus:outline-none focus:border-[#40787F]"
+                placeholder="Masukkan Nomor Id Pelanggan Anda"
+                [(ngModel)]="inputIdPel"
+                required
+              />
+            </div>
+
+            <div
+              *ngIf="!inputIdPel && submitted"
+              class="text-red-500 text-xs mt-1"
+            >
+              IDPEL is required
+            </div>
+
+            <div class="mt-5 flex items-center">
+              <input
+                type="checkbox"
+                id="saveToFavorites"
+                class="mr-2 border-orange-500 checked:bg-orange-500"
+                (change)="onCheckboxChange($event)"
+              />
+              <label for="saveToFavorites" class="text-gray-600 text-xs"
+                >Simpan ke Daftar Favorit</label
+              >
+            </div>
+
+            <div
+              class="flex flex-col items-start mt-5"
+              *ngIf="isSaveToFavoritesChecked"
+            >
+              <p class="font-semibold">Nama</p>
+              <input
+                type="text"
+                class="w-full mt-2 border-b text-sm focus:outline-none focus:border-[#40787F]"
+                placeholder="max 20 karakter"
+                [(ngModel)]="inputName"
+                required
+              />
+              <div
+                *ngIf="!inputName && submitted"
+                class="text-red-500 text-xs mt-1"
+              >
+                Name is required
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="shadow-sm bg-[#40787F] w-full text-white font-semibold font-['Open Sans'] p-2 mt-4 rounded-lg"
+              (click)="onConfirmButtonClicked()"
+            >
+              Konfirmasi
+            </button>
+          </div>
+        </div>
+      </main>
+    </body>
+  </div>
+</html>
